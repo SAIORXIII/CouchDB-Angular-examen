@@ -26,7 +26,7 @@ angular.module('movieApp', ['ngRoute'])
 	    			console.log(data);
 	    			
 	    			var doc = {};	
-	    			doc.name = data.data.docs.name;
+	    			doc.name = data;
 					var json = JSON.stringify(doc);
 					saveSrv.setObject(doc.name,json);
 	    		}), function(err){
