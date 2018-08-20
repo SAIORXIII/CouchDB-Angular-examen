@@ -13,16 +13,20 @@ angular.module('movieApp', ['ngRoute'])
 	.controller('homeCtrl', function($scope, itemSrv, saveSrv) {
 		
 			
-	    	//var typedItem = $('#itemText').val();
+	    	$('#searchButton').on('click', function(e) {
+	    		$scope.items = '';
+	    		var typedDate1 = $('#date1').val();
+	    		var typedDate2 = $('#date2').val();
+	    		//console.log(typedDate1 + " " + typedDate2);
 	    		
 	    		
 	    		
 	    		itemSrv.getItems().then(function(data){
-	    			$scope.items = data;
+	    			$scope.items = data.data.docs;
 	    			console.log(data);
 	    			
 	    			var doc = {};	
-	    			doc.name = data;
+	    			doc.name = data.data.docs.name;
 					var json = JSON.stringify(doc);
 					saveSrv.setObject(doc.name,json);
 	    		}), function(err){
@@ -33,15 +37,16 @@ angular.module('movieApp', ['ngRoute'])
 				}
 	    		
 	    	
-	    	
+	    	});
     })
    
     .service('itemSrv', function($http, $q) {
     		this.getItems = function() {
 	    		var q = $q.defer();
-	    		var url = 'http://localhost:5984/pokemon/f1188e6b858cf0a7015d132f82005a31';
+	    		var url = 'http://localhost:5984/pokemon/f1188e6b858cf0a7015d132f8200b43a';
 	    		$http.get(url).then(function(data){
 	    			var items = data;
+	    			console.log(items);
 	    			q.resolve(items);
 	    			}, function(err) {
 	    				q.reject(err);
