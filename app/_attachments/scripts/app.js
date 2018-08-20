@@ -11,21 +11,20 @@ angular.module('movieApp', ['ngRoute'])
 	})
 	
 	.controller('homeCtrl', function($scope, itemSrv, saveSrv) {
-		$('#itemText').val('4');
-	    	$('#searchButton').on('click', function(e) {
-	    		$scope.items = '';
-	    		var typedItem = $('#itemText').val();
+		
+			
+	    	//var typedItem = $('#itemText').val();
 	    		
 	    		
 	    		
-	    		itemSrv.getItems(typedItem).then(function(data){
+	    		itemSrv.getItems().then(function(data){
 	    			$scope.items = data;
+	    			console.log(data);
 	    			
 	    			var doc = {};	
-	    			doc.id = data.id;
-					doc.title = data.title;
+	    			doc.name = data;
 					var json = JSON.stringify(doc);
-					saveSrv.setObject(doc.id,json);
+					saveSrv.setObject(doc.name,json);
 	    		}), function(err){
 					saveSrv.getObject(typedItem).then(function(data){
 						$scope.items = data.title;
@@ -34,15 +33,15 @@ angular.module('movieApp', ['ngRoute'])
 				}
 	    		
 	    	
-	    	});
+	    	
     })
    
     .service('itemSrv', function($http, $q) {
-    		this.getItems = function(typedItem) {
+    		this.getItems = function() {
 	    		var q = $q.defer();
-	    		var url = 'https://jsonplaceholder.typicode.com/posts/' + typedItem;
+	    		var url = 'http://localhost:5984/pokemon/f1188e6b858cf0a7015d132f82005a31';
 	    		$http.get(url).then(function(data){
-	    			var items = data.data;
+	    			var items = data;
 	    			q.resolve(items);
 	    			}, function(err) {
 	    				q.reject(err);
